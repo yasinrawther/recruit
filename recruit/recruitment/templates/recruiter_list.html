@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Form List</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<h1>Recruiters List</h1>
+</head>
+<body>
+{% block content %}
+<table id='formdetails' class="table table-striped">
+<thead>
+	<tr>
+		<th>Full Name</th>
+		<th>Email</th>
+		<th>Gender</th>
+		<th>DOB</th>
+		<th>Phone Number</th>
+		<th>Address</th>
+		<th>Total Experience</th>
+	</tr>
+</thead>
+
+<tbody>
+{%  for i in data %}
+	<tr>
+		<td id="name" style="display:none">{{ i.id }} </td>
+		<td id="name">{{ i.name }} </td>
+		<td id="email">{{ i.email }}</td>
+		<td id="gender">{{ i.gender }}</td>
+		<td id="dob">{{ i.dob }}</td>
+		<td id="phone_number">{{ i.phone_number }}</td>
+		<td id="address">{{ i.address }}</td>
+		<td id="total_experience">{{ i.total_experience }}</td>
+		<td> <button type="button" id="submit" onclick="acceptForm('accept')" class="btn btn-primary">Accept</button></td>
+		<td> <button type="button" id="reject" onclick="acceptForm('reject')" class="btn btn-danger">Reject</button></td>
+	<tr><br><br>
+{% endfor %}
+</tbody>
+</table>
+{% endblock %}
+</body>
+<script>
+
+	function acceptForm(status) {
+		var table = document.getElementsByTagName("table")[0];
+		var tbody = table.getElementsByTagName("tbody")[0];
+		tbody.onclick = function (e) {
+		    e = e || window.event;
+		    var data = [];
+		    var target = e.srcElement || e.target;
+		    while (target && target.nodeName !== "TR") {
+		        target = target.parentNode;
+		    }
+		    if (target) {
+		        var cells = target.getElementsByTagName("td");
+		        id = cells[0].innerHTML
+		    }
+		    $.ajax({
+		        url: "/recruitment/recruiters_list/",
+		        type: "POST", //request type
+		        data: {'id': id, 'status': status},
+		        success: function(result) {
+		            alert(result.response);
+		            $('#recruitment_form')[0].reset();
+		            location.reload();
+		        },
+		        error: function(xhr, status, error) {
+		            var err = eval("(" + xhr.responseText + ")");
+		            alert(err.response);
+		            $('#recruitment_form')[0].reset();
+		        }
+		    });
+		    
+		}
+}
+</script>
+
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<title>Recruitment Form</title>
+</head>
+<body>
+
+<div class="container">
+  <h2>Recruitment Form</h2>
+  <form action="/action_page.php" id="recruitment_form">
+  	<div class="form-group">
+      <label for="full_name">Full Name:</label>
+      <input type="text" class="form-control" id="full_name" placeholder="Enter Name" name="name">
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input type="email" class="form-control" id="email" placeholder="Enter email" name="email">
+    </div>
+    <div class="form-group">
+      <label for="gender">Gender:</label>
+      <input type="text" class="form-control" id="gender" placeholder="Enter gender" name="gender">
+    </div>
+    <div class="form-group">
+      <label for="dob">DOB:</label>
+      <input type="date" class="form-control" id="dob" placeholder="Enter DOB" name="dob">
+    </div>
+    <div class="form-group">
+      <label for="phone">Phone Number:</label>
+      <input type="number" class="form-control" id="phone_number" placeholder="Enter Phone" name="phone">
+    </div>
+    <div class="form-group">
+      <label for="address">Address:</label>
+      <input type="text" class="form-control" id="address" placeholder="Enter Address" name="address">
+    </div>
+    <div class="form-group">
+      <label for="total_experience">Total Experience:</label>
+      <input type="text" class="form-control" id="total_experience" placeholder="Enter year of experice" name="phone">
+    </div>
+    <button type="button" class="btn btn-primary" onclick="submitForm()">Submit Form</button>
+  </form>
+</div>
+
+<!-- form class="form-inline", id='recruitment_form'>
+<h1>Recruit Form</h1>
+
+<table>
+Full Name:
+<input id='full_name' type="text" name="name" value=""><br>
+
+Email:
+<input id="email" type="text" value=""><br>
+
+Gender:
+<input id="gender" type="text" value=""><br>
+
+DOB:
+<input id="dob" type="date" value=""><br>
+
+Phone Number:
+<input id="phone_number" type="text" value=""><br>
+
+Address:
+<input id="address" type="text" value=""><br>
+
+Total Experience:
+<input id="total_experience" type="text" value=""><br>
+</table>
+
+<button type="button" class="btn btn-primary" onclick="submitForm()">Submit Form</button> -->
+
+</body>
+<script >
+	function submitForm() {
+		var full_name = $('#full_name').val()
+		var email = $('#email').val()
+		var gender = $('#gender').val()
+		var dob = $('#dob').val()
+		var phone_number = $('#phone_number').val()
+		var address = $('#address').val()
+		var total_experience = $('#total_experience').val()
+    $.ajax({
+        url: "/recruitment/recruiters/",
+        type: "POST", //request type
+        data: {'full_name': full_name, 'email': email, 'gender': gender, 'dob': dob, 'phone_number': phone_number, 'address': address, 'total_experience': total_experience,
+    			csrfmiddlewaretoken: $('meta[name="_token"]').attr('content')},
+        success: function(result) {
+            alert(result.response);
+            $('#recruitment_form')[0].reset();
+
+        },
+        error: function(xhr, status, error) {
+            var err = eval("(" + xhr.responseText + ")");
+            alert(err.response);
+            $('#recruitment_form')[0].reset();
+        }
+    });
+}
+</script>
+</html>
